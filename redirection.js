@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   var response = await fetch('./redirections.json').then(r => r.json());
   if (response[query]){
     document.querySelector('#url').innerText = response[query];
+    document.querySelector('#error').style.display = 'none';
     await sleep(3);
     window.location.href = response[query];
   }
+  document.querySelector('#redirecting').style.display = 'none';
 });

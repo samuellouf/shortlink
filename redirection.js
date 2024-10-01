@@ -1,0 +1,22 @@
+const sleep = (seconds) => {
+  return new Promise((resolve) => {
+    setInterval(resolve, seconds * 1000);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  let query = decodeURIComponent(window.location.href.split('/')[(window.location.href.split('/').length - (window.location.href.endsWith('/') ? 2 : 1))].replaceAll('-', ' ').replaceAll('_', ' '));
+  if (query.includes('#')) query = query.split('#')[0];
+  if (query.includes('?')) query = query.split('?')[0];
+  if (query.includes('.')) query = query.split('.')[0];
+  document.querySelector('.search a').href = 'https://samuellouf.github.io/?q=' + query;
+  document.querySelector('.search .search_query').innerText = query;
+  document.querySelector('#sl').innerText = query;
+
+  var response = await fetch('./redirections.json').then(r => r.json());
+  if (response[query]){
+    document.querySelector('#url').innerText = response[query];
+    await sleep(3);
+    window.location.href = response[query];
+  }
+});
